@@ -1,169 +1,181 @@
 <template>
-  <v-container>
+  <v-container @keyup.enter="submit()">
     <v-card>
-					<v-card-text>
-						<v-container>
-							<v-row>
-								<v-col cols="12">
-									<v-text-field
-										label="Speere"
-                    type="number"
-										v-model="form.speere"
-									></v-text-field>
-								</v-col>
-								<v-col cols="12">
-									<v-text-field
-										label="Schwerter"
-                    type="number"
-										v-model="form.schwerter"
-									></v-text-field>
-								</v-col>
-                <v-col cols="12">
-									<v-text-field
-										label="Äxte"
-                    type="number"
-										v-model="form.axt"
-									></v-text-field>
-								</v-col>
-								<v-col cols="12">
-									<v-text-field
-										label="Lkav"
-                    type="number"
-										v-model="form.lkav"
-									></v-text-field>
-								</v-col>
-                <v-col cols="12">
-									<v-text-field
-										label="Skav"
-                    type="number"
-										v-model="form.skav"
-									></v-text-field>
-								</v-col>
-							</v-row>
-						</v-container>
-					</v-card-text>
-					<v-card-actions>
-            <v-spacer></v-spacer>
-						<v-btn @click="submit"> Berechnen </v-btn>
-            <v-spacer></v-spacer>
-					</v-card-actions>
-				</v-card>
-        <br>
-        <v-data-table
-        :headers="headers"
-        :items="items"
-        ></v-data-table>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                label="Speere"
+                type="number"
+                v-model="form.speere"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Schwerter"
+                type="number"
+                v-model="form.schwerter"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Äxte"
+                type="number"
+                v-model="form.axt"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Lkav"
+                type="number"
+                v-model="form.lkav"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Skav"
+                type="number"
+                v-model="form.skav"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn @click="submit"> Berechnen </v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </v-card>
+    <br />
+    <v-data-table
+      v-if="info"
+      :headers="headers"
+      :items="items"
+      :hide-default-footer="true"
+    ></v-data-table>
   </v-container>
 </template>
 
 <script>
- export default {
-	data() {
-		return {
-			form: {
-				speere: 0,
+export default {
+  data() {
+    return {
+      form: {
+        speere: 0,
         schwerter: 0,
         axt: 0,
         lkav: 0,
         skav: 0,
       },
       headers: [
-        { text: 'Stufe', value: 'stufe', sortable: false},
-         { text: 'Speere', value: 'speere', sortable: false},
-         { text: 'Schwerter', value: 'schwerter', sortable: false},
-         { text: 'Äxte', value: 'axt', sortable: false},
-         { text: 'Lkav', value: 'lkav', sortable: false},
-         { text: 'Skav', value: 'skav', sortable: false},
+        { text: "Stufe", value: "stufe", sortable: false },
+        { text: "Speere", value: "speere", sortable: false },
+        { text: "Schwerter", value: "schwerter", sortable: false },
+        { text: "Äxte", value: "axt", sortable: false },
+        { text: "Lkav", value: "lkav", sortable: false },
+        { text: "Skav", value: "skav", sortable: false },
       ],
       items: [],
-    }
+      info: false,
+    };
   },
   methods: {
-    submit(){
-      if (!this.form.speere)
-      {
+    submit() {
+      if (!this.form.speere) {
         this.form.speere = 0;
       }
-      if (!this.form.schwerter)
-      {
+      if (!this.form.schwerter) {
         this.form.schwerter = 0;
       }
-      if (!this.form.axt)
-      {
+      if (!this.form.axt) {
         this.form.axt = 0;
       }
-      if (!this.form.lkav)
-      {
+      if (!this.form.lkav) {
         this.form.lkav = 0;
       }
-      if (!this.form.skav)
-      {
+      if (!this.form.skav) {
         this.form.skav = 0;
       }
 
-      this.items = {};
-      let maxkap = this.form.speere * 25 + this.form.schwerter * 15 + this.form.axt * 10 + this.form.lkav * 80 + this.form.skav * 50
-      let a1 = 0
-      let a2 = 0
-      let a3 = 0
-      let end = 0
+      this.items = [];
+      let maxkap =
+        this.form.speere * 25 +
+        this.form.schwerter * 15 +
+        this.form.axt * 10 +
+        this.form.lkav * 80 +
+        this.form.skav * 50;
+      let a1 = 0;
+      let a2 = 0;
+      let a3 = 0;
+      let end = 0;
 
-      for (let x1 = 0; x1 < 100; x1++){
-        for(let x2 = 0; x2 < 100; x2++){
-          for(let x3 = 0; x3 < 100; x3++){
-            if(x1 + x2 + x3 == 100){
-              let loot1 = maxkap * x1 * 0.1 / 100;
-              let loot2 = maxkap * x2 * 0.25 / 100;
-              let loot3 = maxkap * x3 * 0.5 / 100;
+      for (let x1 = 0; x1 < 100; x1++) {
+        for (let x2 = 0; x2 < 100; x2++) {
+          for (let x3 = 0; x3 < 100; x3++) {
+            if (x1 + x2 + x3 == 100) {
+              let loot1 = (maxkap * x1 * 0.1) / 100;
+              let loot2 = (maxkap * x2 * 0.25) / 100;
+              let loot3 = (maxkap * x3 * 0.5) / 100;
 
-              let wert1 = loot1 * (24*60*60/(Math.pow(loot1, 0.9) * Math.pow(100, 0.45) + 1800));
-              let wert2 = loot2 * (24*60*60/(Math.pow(loot2, 0.9) * Math.pow(100, 0.45) + 1800));
-              let wert3 = loot3 * (24*60*60/(Math.pow(loot3, 0.9) * Math.pow(100, 0.45) + 1800));
+              let wert1 =
+                loot1 *
+                ((24 * 60 * 60) /
+                  (Math.pow(loot1, 0.9) * Math.pow(100, 0.45) + 1800));
+              let wert2 =
+                loot2 *
+                ((24 * 60 * 60) /
+                  (Math.pow(loot2, 0.9) * Math.pow(100, 0.45) + 1800));
+              let wert3 =
+                loot3 *
+                ((24 * 60 * 60) /
+                  (Math.pow(loot3, 0.9) * Math.pow(100, 0.45) + 1800));
 
               let gesamtwert = wert1 + wert2 + wert3;
-              if(gesamtwert >= end){
+              if (gesamtwert >= end) {
                 end = gesamtwert;
-                a1 = x1
-                a2 = x2
-                a3 = x3
+                a1 = x1;
+                a2 = x2;
+                a3 = x3;
               }
             }
           }
         }
-      }     
+      }
 
       let end1 = {
-        endStufe: 'Stufe 1',
-        endSpeere : this.form.speere * a1 / 100,
-        endSchwerter : this.form.schwerter * a1 / 100,
-        endAxt : this.form.axt * a1 / 100,
-        endLkav : this.form.lkav * a1 / 100,
-        endSkav : this.form.skav * a1 / 100,
+        stufe: "Stufe 1",
+        speere: (this.form.speere * a1) / 100,
+        schwerter: (this.form.schwerter * a1) / 100,
+        axt: (this.form.axt * a1) / 100,
+        lkav: (this.form.lkav * a1) / 100,
+        skav: (this.form.skav * a1) / 100,
       };
 
       let end2 = {
-       endStufe: 'Stufe 2',
-       endSpeere : this.form.speere * a2 / 100,
-       endSchwerter : this.form.schwerter * a2 / 100,
-       endAxt : this.form.axt * a2 / 100,
-       endLkav : this.form.lkav * a2 / 100,
-       endSkav : this.form.skav * a2 / 100,
-      }
+        stufe: "Stufe 2",
+        speere: (this.form.speere * a2) / 100,
+        schwerter: (this.form.schwerter * a2) / 100,
+        axt: (this.form.axt * a2) / 100,
+        lkav: (this.form.lkav * a2) / 100,
+        skav: (this.form.skav * a2) / 100,
+      };
 
       let end3 = {
-       endStufe: 'Stufe 3',
-       endSpeere : this.form.speere * a3 / 100,
-       endSchwerter : this.form.schwerter * a3 / 100,
-       endAxt : this.form.axt * a3 / 100,
-       endLkav : this.form.lkav * a3 / 100,
-       endSkav : this.form.skav * a3 / 100,
-      }
+        stufe: "Stufe 3",
+        speere: (this.form.speere * a3) / 100,
+        schwerter: (this.form.schwerter * a3) / 100,
+        axt: (this.form.axt * a3) / 100,
+        lkav: (this.form.lkav * a3) / 100,
+        skav: (this.form.skav * a3) / 100,
+      };
 
       this.items.push(end1);
       this.items.push(end2);
       this.items.push(end3);
-          
+      this.info = true;
     },
   },
- }
+};
 </script>
